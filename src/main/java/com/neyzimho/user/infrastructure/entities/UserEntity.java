@@ -3,6 +3,8 @@ package com.neyzimho.user.infrastructure.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -25,5 +27,13 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private List<AddressEntity> addresses;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private List<PhoneEntity> phones;
 
 }
