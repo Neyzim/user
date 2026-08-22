@@ -4,6 +4,7 @@ import com.neyzimho.user.bussiness.converter.UserConverter;
 import com.neyzimho.user.bussiness.dto.UserDto;
 import com.neyzimho.user.infrastructure.entities.UserEntity;
 import com.neyzimho.user.infrastructure.exception.ConflictException;
+import com.neyzimho.user.infrastructure.exception.ResourceNotFoundException;
 import com.neyzimho.user.infrastructure.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,5 +41,21 @@ public class UserService {
 
     public boolean verifyExistsEmail(String email){
         return userRepository.existsByEmail(email);
+    }
+
+    public UserDto getUserByEmail(String email){
+        try {
+            return userConverter.toUserDto(
+                    userRepository.findByEmail(email).orElseThrow(
+                            () -> new ResourceNotFoundException("Email not Found")
+                    )
+            );
+        } catch (ResourceNotFoundException e){
+            throw new ResourceNotFoundException("Email not Found" + email);
+        }
+    }
+
+    public void deleteUserByEmail(String email){
+        userRepository.deleteByEmail(email);
     }
 }

@@ -7,12 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -26,5 +21,24 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto){
         return ResponseEntity.ok(userService.saveUser(userDto));
+    }
+
+    @PostMapping(value = "/login")
+    public String login(@RequestBody UserDto userDto){
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
+        );
+        return "Bearer: " + jwtUtil.generateToken(auth.getName());
+    }
+
+    @GetMapping
+    public ResponseEntity<UserDto> getUserByEmail(String email){
+        return ResponseEntity.ok(userService.getUserByEmail(email));
+    }
+
+    @DeleteMapping(value = "/delete/{email}")
+    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email){
+        userService.deleteUserByEmail(email);
+        return ResponseEntity.ok().build();
     }
 }
