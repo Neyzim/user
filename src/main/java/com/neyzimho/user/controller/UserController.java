@@ -26,6 +26,14 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(userDto));
     }
 
+    @PostMapping(value = "/login")
+    public String login(@RequestBody UserDto userDto){
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
+        );
+        return "Bearer" + jwtUtil.generateToken(auth.getName());
+    }
+
     @GetMapping
     public ResponseEntity<UserDto> getUserByEmail(String email){
         return ResponseEntity.ok(userService.getUserByEmail(email));
