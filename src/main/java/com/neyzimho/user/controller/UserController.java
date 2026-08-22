@@ -2,15 +2,12 @@ package com.neyzimho.user.controller;
 
 import com.neyzimho.user.bussiness.UserService;
 import com.neyzimho.user.bussiness.dto.UserDto;
-import com.neyzimho.user.infrastructure.entities.UserEntity;
 import com.neyzimho.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -31,7 +28,7 @@ public class UserController {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
         );
-        return "Bearer" + jwtUtil.generateToken(auth.getName());
+        return "Bearer: " + jwtUtil.generateToken(auth.getName());
     }
 
     @GetMapping
