@@ -28,7 +28,7 @@ public class UserController {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
         );
-        return "Bearer: " + jwtUtil.generateToken(auth.getName());
+        return "Bearer " + jwtUtil.generateToken(auth.getName());
     }
 
     @GetMapping
@@ -40,5 +40,12 @@ public class UserController {
     public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email){
         userService.deleteUserByEmail(email);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<UserDto> updateUserInformation(@RequestBody UserDto userDto,
+                                                         @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.updateUserData(token, userDto));
+
     }
 }

@@ -6,6 +6,7 @@ import com.neyzimho.user.infrastructure.entities.UserEntity;
 import com.neyzimho.user.infrastructure.exception.ConflictException;
 import com.neyzimho.user.infrastructure.exception.ResourceNotFoundException;
 import com.neyzimho.user.infrastructure.repositories.UserRepository;
+import com.neyzimho.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
 
     public UserDto saveUser(UserDto userDto){
@@ -57,5 +59,23 @@ public class UserService {
 
     public void deleteUserByEmail(String email){
         userRepository.deleteByEmail(email);
+    }
+
+    public UserDto updateUserData(String token, UserDto userDto){
+        //Busca o email do usuario através do Token (deixando de ser obrigatorio o email)
+       String email = jwtUtil.extractUsername(token.substring(7));
+       //criptografia de senha
+       userDto.setPassword(userDto.getPassword() != null ?
+               passwordEncoder.encode(userDto.getPassword()) : null);
+       //Buscou os dados do usuario no Banco
+       UserEntity user = userRepository.findByEmail(email).orElseThrow(
+               () -> new ResourceNotFoundException("Email não localizado!")
+       );
+       //Mesclou os dados que recebemos na requisição com os dados do Banco
+       UserEntity userEntity = userConverter.updateUser(userDto, user);
+       //Criptografa a senha novamente
+       userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        //salva os dados do User convertidos e converte o retorno para o DTO
+       return userConverter.toUserDto(userRepository.save(userEntity));
     }
 }
