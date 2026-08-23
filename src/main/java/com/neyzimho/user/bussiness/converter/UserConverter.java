@@ -87,4 +87,15 @@ public class UserConverter {
                 .ddd(phoneDto.getDdd())
                 .build();
     }
+
+    public UserEntity updateUser(UserDto userDto, UserEntity userEntity){
+        return UserEntity.builder()
+                .name(userDto.getName() != null ? userDto.getName() : userEntity.getName())
+                .id(userEntity.getId())
+                .password(userDto.getPassword() != null ? userDto.getPassword() : userEntity.getPassword())
+                .addresses(userEntity.getAddresses())
+                .phones(userEntity.getPhones())
+                .email(userDto.getEmail() != null ? userDto.getEmail() : userEntity.getEmail())
+            .build();
+    }
 }
