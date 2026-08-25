@@ -62,4 +62,16 @@ public class UserController {
                                                     @RequestParam("id") Long id){
         return ResponseEntity.ok(userService.updatePhone(id, phoneDto));
     }
+
+    @PostMapping("/address")
+    public ResponseEntity<AddressDto> saveAddress(@RequestBody AddressDto addressDto,
+                                                    @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.saveNewAddress(token, addressDto));
+    }
+
+    @PostMapping("/phone")
+    public ResponseEntity<PhoneDto> saveNewPhone(@RequestBody PhoneDto phoneDto,
+                                                 @RequestHeader("Authorization") String token){
+        return ResponseEntity.ok(userService.saveNewPhone(token, phoneDto));
+    }
 }
