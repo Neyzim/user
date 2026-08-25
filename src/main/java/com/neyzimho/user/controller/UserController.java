@@ -26,6 +26,7 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(userDto));
     }
 
+
     @PostMapping(value = "/login")
     public String login(@RequestBody UserDto userDto){
         Authentication auth = authenticationManager.authenticate(
