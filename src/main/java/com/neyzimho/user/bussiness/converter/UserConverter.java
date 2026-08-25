@@ -122,4 +122,24 @@ public class UserConverter {
                 .user_id(phoneEntity.getUser_id())
             .build();
     }
+
+    public AddressEntity toAddressEntity(AddressDto addressDto, Long userId){
+        return AddressEntity.builder()
+                .road(addressDto.getRoad())
+                .city(addressDto.getCity())
+                .state(addressDto.getState())
+                .info(addressDto.getInfo())
+                .number(addressDto.getNumber())
+                .code(addressDto.getCode())
+                .user_id(userId)
+            .build();
+    }
+
+    public PhoneEntity toPhoneEntity(PhoneDto phoneDto, Long userId){
+        return PhoneEntity.builder()
+                .user_id(userId)
+                .ddd(phoneDto.getDdd())
+                .number(phoneDto.getNumber())
+            .build();
+    }
 }
