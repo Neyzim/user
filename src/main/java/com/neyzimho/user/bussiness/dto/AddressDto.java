@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class AddressDto {
 
+    private Long id;
     private String road;
     private String number;
     private String info;

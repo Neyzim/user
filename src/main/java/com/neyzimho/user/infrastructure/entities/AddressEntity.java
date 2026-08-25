@@ -27,5 +27,7 @@ public class AddressEntity {
     private String state;
     @Column(name = "code", length = 9)
     private String code;
+    @Column(name = "user_id")
+    private Long user_id;
 
 }
