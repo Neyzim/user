@@ -1,7 +1,10 @@
 package com.neyzimho.user.controller;
 
 import com.neyzimho.user.bussiness.UserService;
+import com.neyzimho.user.bussiness.dto.AddressDto;
+import com.neyzimho.user.bussiness.dto.PhoneDto;
 import com.neyzimho.user.bussiness.dto.UserDto;
+import com.neyzimho.user.infrastructure.entities.AddressEntity;
 import com.neyzimho.user.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +49,17 @@ public class UserController {
     public ResponseEntity<UserDto> updateUserInformation(@RequestBody UserDto userDto,
                                                          @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(userService.updateUserData(token, userDto));
+    }
 
+    @PutMapping("/address")
+    public ResponseEntity<AddressDto> updateAddress(@RequestBody AddressDto addressDto,
+                                                    @RequestParam("id") Long id){
+        return ResponseEntity.ok(userService.updateAddress(id, addressDto));
+    }
+
+    @PutMapping("/phone")
+    public ResponseEntity<PhoneDto> updatePhone(@RequestBody PhoneDto phoneDto,
+                                                    @RequestParam("id") Long id){
+        return ResponseEntity.ok(userService.updatePhone(id, phoneDto));
     }
 }

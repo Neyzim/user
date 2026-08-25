@@ -62,29 +62,31 @@ public class UserConverter {
     }
 
 
-    public List<AddressDto> toAddressListDto(List<AddressEntity> addressDto){
-        return addressDto.stream().map(this::toAddressDto).toList();
+    public List<AddressDto> toAddressListDto(List<AddressEntity> addressesEntity){
+        return addressesEntity.stream().map(this::toAddressDto).toList();
     }
 
-    public AddressDto toAddressDto(AddressEntity addressDto){
+    public AddressDto toAddressDto(AddressEntity addressEntity){
         return AddressDto.builder()
-                .road(addressDto.getRoad())
-                .number(addressDto.getNumber())
-                .info(addressDto.getInfo())
-                .city(addressDto.getCity())
-                .state(addressDto.getState())
-                .code(addressDto.getCode())
+                .id(addressEntity.getId())
+                .road(addressEntity.getRoad())
+                .number(addressEntity.getNumber())
+                .info(addressEntity.getInfo())
+                .city(addressEntity.getCity())
+                .state(addressEntity.getState())
+                .code(addressEntity.getCode())
                 .build();
     }
 
-    public List<PhoneDto> toPhoneListDto(List<PhoneEntity> phoneDto){
-        return phoneDto.stream().map(this::toPhoneDto).toList();
+    public List<PhoneDto> toPhoneListDto(List<PhoneEntity> phonesEntity){
+        return phonesEntity.stream().map(this::toPhoneDto).toList();
     }
 
-    public PhoneDto toPhoneDto(PhoneEntity phoneDto){
+    public PhoneDto toPhoneDto(PhoneEntity phoneEntity){
         return PhoneDto.builder()
-                .number(phoneDto.getNumber())
-                .ddd(phoneDto.getDdd())
+                .id(phoneEntity.getId())
+                .number(phoneEntity.getNumber())
+                .ddd(phoneEntity.getDdd())
                 .build();
     }
 
@@ -96,6 +98,28 @@ public class UserConverter {
                 .addresses(userEntity.getAddresses())
                 .phones(userEntity.getPhones())
                 .email(userDto.getEmail() != null ? userDto.getEmail() : userEntity.getEmail())
+            .build();
+    }
+
+    public AddressEntity updateAddress(AddressDto addressDto, AddressEntity addressEntity){
+        return AddressEntity.builder()
+                .id(addressEntity.getId())
+                .road(addressDto.getRoad() != null ? addressDto.getRoad() : addressEntity.getRoad())
+                .city(addressDto.getCity()!= null ? addressDto.getCity() : addressEntity.getCity())
+                .state(addressDto.getState() != null ? addressDto.getState() : addressEntity.getState())
+                .number(addressDto.getNumber() != null ? addressDto.getNumber() : addressEntity.getState())
+                .info(addressDto.getInfo() != null ? addressDto.getInfo() : addressEntity.getInfo())
+                .code(addressDto.getCode() != null ? addressDto.getCode() : addressEntity.getCode())
+                .user_id(addressEntity.getUser_id())
+            .build();
+    }
+
+    public PhoneEntity updatePhone(PhoneDto phoneDto, PhoneEntity phoneEntity){
+        return PhoneEntity.builder()
+                .id(phoneEntity.getId())
+                .number(phoneDto.getNumber() != null ? phoneDto.getNumber() : phoneEntity.getNumber())
+                .ddd(phoneDto.getDdd() != null ? phoneDto.getDdd() : phoneEntity.getDdd())
+                .user_id(phoneEntity.getUser_id())
             .build();
     }
 }

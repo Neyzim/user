@@ -19,4 +19,6 @@ public class PhoneEntity {
     private String number;
     @Column(name = "ddd")
     private String ddd;
+    @Column(name = "user_id")
+    private Long user_id;
 }
