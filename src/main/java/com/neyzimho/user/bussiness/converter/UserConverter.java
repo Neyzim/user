@@ -19,8 +19,8 @@ public class UserConverter {
                 .name(userDto.getName())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
-                .addresses(toAddressListEntity(userDto.getAddresses()))
-                .phones(toPhoneListEntity(userDto.getPhones()))
+                .addresses(userDto.getAddresses() != null ? toAddressListEntity(userDto.getAddresses()): null)
+                .phones(userDto.getPhones() != null ? toPhoneListEntity(userDto.getPhones()): null)
             .build();
     }
 
@@ -56,8 +56,8 @@ public class UserConverter {
                 .name(userEntity.getName())
                 .email(userEntity.getEmail())
                 .password(userEntity.getPassword())
-                .addresses(toAddressListDto(userEntity.getAddresses()))
-                .phones(toPhoneListDto(userEntity.getPhones()))
+                .addresses(userEntity.getAddresses() != null ? toAddressListDto(userEntity.getAddresses()) : null)
+                .phones(userEntity.getPhones() != null ? toPhoneListDto(userEntity.getPhones()): null)
                 .build();
     }
 
