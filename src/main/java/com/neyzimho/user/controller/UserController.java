@@ -1,9 +1,11 @@
 package com.neyzimho.user.controller;
 
 import com.neyzimho.user.bussiness.UserService;
+import com.neyzimho.user.bussiness.ViaCepService;
 import com.neyzimho.user.bussiness.dto.AddressDto;
 import com.neyzimho.user.bussiness.dto.PhoneDto;
 import com.neyzimho.user.bussiness.dto.UserDto;
+import com.neyzimho.user.bussiness.dto.ViaCepDTO;
 import com.neyzimho.user.infrastructure.entities.AddressEntity;
 import com.neyzimho.user.infrastructure.security.JwtUtil;
 import com.neyzimho.user.infrastructure.security.SecurityConfig;
@@ -27,6 +29,7 @@ public class UserController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final ViaCepService viaCepService;
 
     @PostMapping
     @Operation(summary = "Save User", description = "Communicates with User Api to create a New User")
@@ -113,4 +116,11 @@ public class UserController {
                                                  @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(userService.saveNewPhone(token, phoneDto));
     }
+
+
+    @GetMapping("/address/{cep}")
+    public ResponseEntity<ViaCepDTO> getCepData(@PathVariable("cep") String cep){
+        return ResponseEntity.ok(viaCepService.searchAddressData(cep));
+    }
+
 }
